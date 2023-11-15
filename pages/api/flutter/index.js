@@ -1,22 +1,20 @@
 import { getAccessToken, withApiAuthRequired } from "@auth0/nextjs-auth0";
 
 export default withApiAuthRequired(async function handler(req, res) {
-    const { accessToken } = await getAccessToken(req, res);
     const fetchOptions = {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
-            jwtTokenString: accessToken,
+            "api-key": process.env.MONGODB_DATA_API_KEY,
         },
     };
     const fetchBody = {
         dataSource: process.env.MONGODB_DATA_SOURCE,
-        database: "social_butterfly",
-        collection: "flutters",
+        database: 'social_butterfly',
+        collection: 'flutters',
     };
     const baseUrl = `${process.env.MONGODB_DATA_API_URL}/action`;
-
     try {
         switch (req.method) {
             case "GET":
